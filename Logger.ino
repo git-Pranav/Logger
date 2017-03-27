@@ -76,8 +76,6 @@ void setup()
   Serial.println("Ready!");
 }
 
-
-
 uint32_t timer = millis();
 void loop() // run over and over again
 {
@@ -85,17 +83,6 @@ void loop() // run over and over again
   /* Get a new sensor event */ 
   sensors_event_t event; 
   bno.getEvent(&event);
-  
-  /* Display the floating point data */
-//  Serial.print("X: ");
-//  Serial.print(event.orientation.x, 4);
-//  Serial.print("\tY: ");
-//  Serial.print(event.orientation.y, 4);
-//  Serial.print("\tZ: ");
-//  Serial.print(event.orientation.z, 4);
-//  Serial.println("");
-  
- // delay(100);
   
   // read data from the GPS in the 'main loop'
   char c = GPS.read();
@@ -116,28 +103,17 @@ void loop() // run over and over again
 
   if (millis() - timer >2000) //Log values only every 2 seconds.
   {
-    timer = millis(); //Reset the timer
-//    Serial.print("\nTime: ");
-//    Serial.print(GPS.hour, DEC); Serial.print(':');
-//    Serial.print(GPS.minute, DEC); Serial.print(':');
-//    Serial.print(GPS.seconds, DEC); Serial.print('.');
-//    Serial.println(GPS.milliseconds);
-//    Serial.print("Date: ");
-//    Serial.print(GPS.day, DEC); Serial.print('/');
-//    Serial.print(GPS.month, DEC); Serial.print("/20");
-//    Serial.println(GPS.year, DEC);
-//    Serial.print("Fix: "); Serial.print((int)GPS.fix);
-//    Serial.print(" quality: "); Serial.println((int)GPS.fixquality); 
-//    
+    timer = millis(); //Reset the timer.
+    
     if (GPS.fix) //Log the values only if GPS has a fix
     {
-      Serial.print("X: ");
-      Serial.print(event.orientation.x, 4);
-      Serial.print("\tY: ");
-      Serial.print(event.orientation.y, 4);
-      Serial.print("\tZ: ");
-      Serial.print(event.orientation.z, 4);
-      Serial.println("");
+//      Serial.print("X: ");
+//      Serial.print(event.orientation.x, 4);
+//      Serial.print("\tY: ");
+//      Serial.print(event.orientation.y, 4);
+//      Serial.print("\tZ: ");
+//      Serial.print(event.orientation.z, 4);
+//      Serial.println("");
       
       Serial.print("Location: ");
       Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
@@ -148,7 +124,13 @@ void loop() // run over and over again
       Serial.print("Altitude: "); Serial.println(GPS.altitude);
       Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
 
+      String imuX = String(event.orientation.x,4); 
+      String imuY = String(event.orientation.y,4); 
+      String imuZ = String(event.orientation.z,4); 
+      String imuString = String(imuX + " " + imuY + " " + imuZ); 
       
+      Serial.println(imuString);
+      logfile.print(imuString);
       logfile.print(GPS.lastNMEA());
       logfile.flush();
     }
