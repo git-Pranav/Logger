@@ -15,7 +15,6 @@ File logfile;
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
 #define GPSECHO false
-
 // this keeps track of whether we're using the interrupt
 // off by default!
 boolean usingInterrupt = false;
@@ -30,7 +29,7 @@ void setup()
   // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
   GPS.begin(9600);
   // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
-  // GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+  //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   // uncomment this line to turn on only the "minimum recommended" data
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
   // For parsing data, we don't suggest using anything but either RMC only or RMC+GGA since
@@ -45,7 +44,7 @@ void setup()
 
   delay(1000);
   // Ask for firmware version
-  Serial1.println(PMTK_Q_RELEASE);
+  //Serial1.println(PMTK_Q_RELEASE);
   if (!SD.begin(cardSelect)) {
     Serial.println("Card init. failed!");
     //  error(2);
@@ -102,13 +101,13 @@ void loop() // run over and over again
 //  Serial.print(event.orientation.z, 4);
 //  Serial.println("");
   
-  delay(100);
+  delay(1000);
   
   // read data from the GPS in the 'main loop'
   char c = GPS.read();
   // if you want to debug, this is a good time to do it!
-//  if (GPSECHO)
-//    if (c) Serial.print(c);
+  if (GPSECHO)
+    if (c) Serial.print(c);
   // if a sentence is received, we can check the checksum, parse it...
   if (GPS.newNMEAreceived()) {
     // a tricky thing here is if we print the NMEA sentence, or data
@@ -124,18 +123,18 @@ void loop() // run over and over again
   if (millis() - timer >2000) //Log values only every 2 seconds.
   {
     timer = millis(); //Reset the timer
-    Serial.print("\nTime: ");
-    Serial.print(GPS.hour, DEC); Serial.print(':');
-    Serial.print(GPS.minute, DEC); Serial.print(':');
-    Serial.print(GPS.seconds, DEC); Serial.print('.');
-    Serial.println(GPS.milliseconds);
-    Serial.print("Date: ");
-    Serial.print(GPS.day, DEC); Serial.print('/');
-    Serial.print(GPS.month, DEC); Serial.print("/20");
-    Serial.println(GPS.year, DEC);
-    Serial.print("Fix: "); Serial.print((int)GPS.fix);
-    Serial.print(" quality: "); Serial.println((int)GPS.fixquality); 
-    
+//    Serial.print("\nTime: ");
+//    Serial.print(GPS.hour, DEC); Serial.print(':');
+//    Serial.print(GPS.minute, DEC); Serial.print(':');
+//    Serial.print(GPS.seconds, DEC); Serial.print('.');
+//    Serial.println(GPS.milliseconds);
+//    Serial.print("Date: ");
+//    Serial.print(GPS.day, DEC); Serial.print('/');
+//    Serial.print(GPS.month, DEC); Serial.print("/20");
+//    Serial.println(GPS.year, DEC);
+//    Serial.print("Fix: "); Serial.print((int)GPS.fix);
+//    Serial.print(" quality: "); Serial.println((int)GPS.fixquality); 
+//    
     if (GPS.fix) //Log the values only if GPS has a fix
     {
       Serial.print("Location: ");
@@ -147,23 +146,11 @@ void loop() // run over and over again
       Serial.print("Altitude: "); Serial.println(GPS.altitude);
       Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
 
-//      logfile.print(event.orientation.x);
-//      logfile.flush();
-//      logfile.print(" ");
-//      logfile.flush();
-//      logfile.print(event.orientation.y);
-//      logfile.flush();
-//      logfile.print(" ");
-//      logfile.flush();
-//      logfile.print(event.orientation.y);
-//      logfile.flush();
-//      logfile.print(" ");
-//      logfile.flush();
       logfile.print(GPS.lastNMEA());
       logfile.flush();
     }
 
-    else Serial.println("No Fix");
+//    else Serial.println("No Fix");
   }
 }
 
