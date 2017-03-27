@@ -32,15 +32,9 @@ void setup()
   //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   // uncomment this line to turn on only the "minimum recommended" data
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
-  // For parsing data, we don't suggest using anything but either RMC only or RMC+GGA since
-  // the parser doesn't care about other sentences at this time
-  // Set the update rate
+ 
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
-  // For the parsing code to work nicely and have time to sort thru the data, and
-  // print it out we don't suggest using anything higher than 1 Hz
 
-  // Request updates on antenna status, comment out to keep quiet
-  //GPS.sendCommand(PGCMD_ANTENNA);
 
   delay(1000);
   // Ask for firmware version
@@ -101,7 +95,7 @@ void loop() // run over and over again
 //  Serial.print(event.orientation.z, 4);
 //  Serial.println("");
   
-  delay(1000);
+  //delay(100);
   
   // read data from the GPS in the 'main loop'
   char c = GPS.read();
