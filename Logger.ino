@@ -124,14 +124,16 @@ void loop() // run over and over again
       Serial.print("Altitude: "); Serial.println(GPS.altitude);
       Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
 
-      String imuX = String(event.orientation.x,4); 
-      String imuY = String(event.orientation.y,4); 
-      String imuZ = String(event.orientation.z,4); 
-      String imuString = String(imuX + " " + imuY + " " + imuZ); 
       
-      Serial.println(imuString);
-      logfile.print(imuString);
-      logfile.print(GPS.lastNMEA());
+      String logString = String(String(event.orientation.x,4) + " " +
+                                    String(event.orientation.y,4) + " " + 
+                                      String(event.orientation.z,4) + " " +
+                                      String(GPS.lastNMEA())); 
+      
+      Serial.println(logString);
+      //logfile.print(imuString);
+      //logfile.print(GPS.lastNMEA());
+      logfile.print(logString);
       logfile.flush();
     }
 
