@@ -7,7 +7,7 @@ Adafruit_GPS GPS(&Serial1);
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 
-//Adafruit_BNO055 bno = Adafruit_BNO055(55);
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 #define cardSelect 4
 
@@ -45,12 +45,12 @@ void setup()
   }
 
   
-//     if(!bno.begin())
-//    {
-//      Serial.println("No BNO055 detected");
-//    }
-//    delay(1000);
-//    bno.setExtCrystalUse(true);
+     if(!bno.begin())
+    {
+      Serial.println("No BNO055 detected");
+    }
+    delay(1000);
+    bno.setExtCrystalUse(true);
 
 
   char filename[15];
@@ -83,8 +83,8 @@ void loop() // run over and over again
 {
   
   /* Get a new sensor event */ 
-//  sensors_event_t event; 
-//  bno.getEvent(&event);
+  sensors_event_t event; 
+  bno.getEvent(&event);
   
   /* Display the floating point data */
 //  Serial.print("X: ");
@@ -95,7 +95,7 @@ void loop() // run over and over again
 //  Serial.print(event.orientation.z, 4);
 //  Serial.println("");
   
-  //delay(100);
+ // delay(100);
   
   // read data from the GPS in the 'main loop'
   char c = GPS.read();
@@ -131,6 +131,14 @@ void loop() // run over and over again
 //    
     if (GPS.fix) //Log the values only if GPS has a fix
     {
+      Serial.print("X: ");
+      Serial.print(event.orientation.x, 4);
+      Serial.print("\tY: ");
+      Serial.print(event.orientation.y, 4);
+      Serial.print("\tZ: ");
+      Serial.print(event.orientation.z, 4);
+      Serial.println("");
+      
       Serial.print("Location: ");
       Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
       Serial.print(", ");
@@ -140,11 +148,13 @@ void loop() // run over and over again
       Serial.print("Altitude: "); Serial.println(GPS.altitude);
       Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
 
+      
       logfile.print(GPS.lastNMEA());
       logfile.flush();
     }
 
 //    else Serial.println("No Fix");
   }
+  
 }
 
